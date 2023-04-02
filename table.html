@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="table.css">
+    </head> 
+    <body>
+        <h1> User Detailds</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Actions</th>
+                     </tr>
+            </thead>
+            <tbody id="employee-data"></tbody>
+        </table>
+    <script>
+
+        window.addEventListener('DOMContentLoaded',() => {
+
+            var tableContainer = document.getElementById("employee-data");
+
+            fetch("http://localhost:8080/api/data")
+            .then((response) => response.json())
+            .then((data) => {
+
+                data.forEach((d) => {
+
+                    var row = document.createElement("tr");
+
+                    var userIdCell = document.createElement("td");
+                    userIdCell.innerHTML = d.Id;
+                    row.appendChild(userIdCell);
+
+                    var usernameCell = document.createElement("td");
+                    usernameCell.innerHTML = d.Name;
+                    row.appendChild(usernameCell);
+
+                    var phonnoCell = document.createElement("td");
+                    phnnoCell.innerHTML = d.Phnno;
+                    row.appendChild(phnnoCell);
+
+                    var emailCell = document.createElement("td");
+                    emailCell.innerHTML = d.Email;
+                    row.appendChild(emailCell);
+
+                    var cityCell = document.createElement("td");
+                    Cityell.innerHTML = d.City;
+                    row.appendChild(cityCell);
+
+                    var stateCell = document.createElement("td");
+                    Stateell.innerHTML = d.State;
+                    row.appendChild(stateCell);
+
+                    var editButton = document.createElement("button");
+                    var editCell = createElement("td")
+                    editCell.appendChild(editButton);
+                    row.appendChild(editCell);
+                    editButton.innerText = "Edit";
+
+                    editButton.addEventListener("click", () => {
+
+                        const row = event.target.closest("tr");
+                        const cell = row.querySelector("td");
+                        const endid = cell.innerText;
+                        console.log(endid)
+
+                        var popup = document.createElement("div")
+                        popup.setAttribute("id","popup")
+                        popup.innerHTML =`<div id="model"> <h2> Edit User</h2>
+                            <label for="field-select">Choose a field</label>
+                            <select id="field-select">
+                                <option value="name"> name</option>
+                                <option value="phnno"> phnno</option>
+                                <option value="email"> email</option>
+                                <option value="city"> city </option>
+                                <option value="state"> state</option>
+                            </select>
+                            <br><br>
+
+                            <label for="field-value"> New value:</label>
+                            input type="text" id="field-value">
+                            <input type="hidden" id="editid" name="editid">
+                            <br><br>
+                            <button Id="save-button" value="submit">Save</button>
+                            <button Id="cancel-button">Csancel</button></div>`;
+                            document.body.appendChild(popup)
+
+                            const savebutton = document.getElementById("save-button")
+                            savebutton.addEventListener("click", () => {
+(
+                                const fieldselect = document.getElementById("field-select")
+                                const selectfield = fieldselect.value;
+                                console.log(selectfield)
+
+                                const valuefield = document.getElementById("field-value")
+                                const newvalue = valuefield.value;
+                                console.log(newvalue)
+
+                    //Function to update a field in a row
+                    fetch(`http://localhost:8080/api/emply/${rowId}`, {
+                     method: 'PUT',
+                     headers: {
+                        'content-Type': `application/json`
+                     },
+                     body: JSON.stringify({
+                        field: selectfield,
+                        value: newvalue
+                     })
+                 })
+                    
+                     .then(response => {
+                        if (!response.ok) {
+                             throw new Error("Network response was not ok");
+                       }
+                       return response.json();
+                    })
+
+                    .catch(error => {
+                        console.errors =`Error: ${error.message}`;
+                    })
+
+                    return false;
+                          })
+                         });
+
+                         var deleteButton = document.createElement("button");
+                         deleteButton.innerHTML="Delete";
+                         deleteButton.addEventListener("click", () => {
+
+                            console.log("Delete button clicked for user with ID:", d.id);
+                     });
+
+                     var deleteCell = document.createElement("td");
+                     deleteCell.appendChild(deleteButton);
+                     row.appendChild(deleteCell);
+
+                     function deleted() {
+                        fetch(`http://localhost:8080)
+                     }
+                })
+            })
+        })
+
+
+
+
+
+
+
+
+
+
+    </script>
