@@ -1,16 +1,17 @@
-package main()
 
-import {
+package main
+
+import(
 	"database/sql"
 	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-}
+)
 
 func main() {
-	db, err :=sql.Open("postgres", "user=postgres password=123456 dbname=mydb sslmode=disable")
+	db, err :=sql.Open("postgres", "user=postgres password=Strong@Passw0rd dbname=postgres sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
@@ -40,14 +41,14 @@ func main() {
 		}
 
 		if err :=c.BindJSON(&user); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H("error": "Invalid request"))
+			c.JSON(http.StatusBadRequest, gin.H("error":"Invalid request"))
 			return
 		}
 
 		result, err :=Exec("Insert into empl(name,phnno,email,city,state) VALUES ($1,$2,$3,$4,$5)",
 	user.Name, user.Phnno, user.Email, user.city, user.State)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H("error": "Failed to get rows affected"))
+		c.JSON(http.StatusInternalServerError, gin.H("error", "Failed to get rows affected"))
 		return
 	}
 
